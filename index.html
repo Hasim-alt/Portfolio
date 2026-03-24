@@ -1366,7 +1366,7 @@
 </footer>
 
 <!-- ─── JS ─── -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // SCADA live clock
   function updateScadaTime() {
     const now = new Date();
@@ -1427,3 +1427,10 @@
   titleEl.style.borderRight = '2px solid var(--amber)';
   titleEl.style.animation = 'blink 1s step-end infinite';
   setTimeout(() => {
+    titleEl.style.borderRight = 'none';
+    titleEl.style.animation = 'none';
+  }, originalText.length * 40 + 1500);
+</script>
+
+</body>
+</html>
