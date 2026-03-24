@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio — EE Instrumentation & Automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #060a10;
+    --bg2: #0c1220;
+    --bg3: #101828;
+    --cyan: #00d4ff;
+    --green: #00ff99;
+    --amber: #ffb800;
+    --red: #ff4060;
+    --text: #c8ddf0;
+    --muted: #5a7a99;
+    --border: rgba(0,212,255,0.15);
+    --glow-c: 0 0 18px rgba(0,212,255,0.5);
+    --glow-g: 0 0 18px rgba(0,255,153,0.5);
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-head: 'Exo 2', sans-serif;
+    --font-ui: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 16px;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── GRID BACKGROUND ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 3px; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    height: 60px;
+    background: rgba(6,10,16,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+  }
+  .nav-logo span { color: var(--green); }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+    background: var(--cyan);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .25s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* ─── SECTION WRAPPER ─── */
+  section { position: relative; z-index: 1; }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 60px;
+    padding: 100px 80px 60px;
+  }
+
+  .hero-left { display: flex; flex-direction: column; gap: 24px; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 16px;
+    border: 1px solid var(--cyan);
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    width: fit-content;
+    background: rgba(0,212,255,0.05);
+    animation: fadeDown .7s .1s both;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: var(--glow-g);
+    animation: pulse 2s infinite;
+  }
+
+  .hero-name {
+    font-family: var(--font-head);
+    font-size: clamp(38px, 5vw, 68px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    animation: fadeDown .7s .2s both;
+  }
+  .hero-name .line1 { display: block; color: var(--text); }
+  .hero-name .line2 {
+    display: block;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-title {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--amber);
+    letter-spacing: 1px;
+    animation: fadeDown .7s .3s both;
+  }
+  .hero-title::before { content: '> '; color: var(--muted); }
+
+  .hero-about {
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.75;
+    color: var(--text);
+    max-width: 520px;
+    opacity: .85;
+    border-left: 2px solid var(--cyan);
+    padding-left: 18px;
+    animation: fadeDown .7s .4s both;
+  }
+
+  .hero-cta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    animation: fadeDown .7s .5s both;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all .25s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--cyan), var(--green));
+    color: var(--bg);
+    box-shadow: 0 0 24px rgba(0,212,255,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 32px rgba(0,212,255,0.55); }
+  .btn-outline {
+    background: transparent;
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
+  }
+  .btn-outline:hover { background: rgba(0,212,255,0.08); transform: translateY(-2px); }
+
+  /* HERO RIGHT — PHOTO + STATS */
+  .hero-right {
+    display: flex; flex-direction: column; align-items: center; gap: 32px;
+    animation: fadeUp .9s .3s both;
+  }
+
+  .photo-frame {
+    position: relative;
+    width: 260px; height: 260px;
+  }
+  .photo-frame::before, .photo-frame::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+  }
+  .photo-frame::before {
+    inset: -8px;
+    border: 2px solid transparent;
+    background: linear-gradient(var(--bg), var(--bg)) padding-box,
+                linear-gradient(135deg, var(--cyan), var(--green), var(--cyan)) border-box;
+    animation: spin 8s linear infinite;
+  }
+  .photo-frame::after {
+    inset: -16px;
+    border: 1px dashed rgba(0,212,255,0.2);
+    animation: spin 16s linear infinite reverse;
+  }
+  .photo-ring-label {
+    position: absolute;
+    inset: -40px;
+    border-radius: 50%;
+    animation: spin 20s linear infinite;
+  }
+  .photo-inner {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 2px solid var(--border);
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  /* Replace this img with your actual photo */
+  .photo-inner img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .photo-placeholder {
+    font-family: var(--font-head);
+    font-size: 64px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--cyan), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stats-row {
+    display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+  }
+  .stat-card {
+    text-align: center;
+    padding: 14px 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    min-width: 90px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+  }
+  .stat-num {
+    font-family: var(--font-head);
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--cyan);
+  }
+  .stat-lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: var(--font-head);
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .section-title span {
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .section-line {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    margin: 16px auto 0;
+    border-radius: 2px;
+  }
+
+  /* ─── SKILLS SECTION ─── */
+  #skills {
+    padding: 100px 80px;
+    background: linear-gradient(180deg, transparent, var(--bg2) 40%, transparent);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .skill-card {
+    position: relative;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px 24px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    transition: border-color .3s, transform .3s, box-shadow .3s;
+    display: block;
+    animation: fadeUp .6s both;
+  }
+  .skill-card:hover {
+    border-color: var(--cyan);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0,212,255,0.15), inset 0 0 30px rgba(0,212,255,0.03);
+  }
+  /* Gradient top bar */
+  .skill-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--grad);
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .skill-card:hover::before { opacity: 1; }
+
+  /* Glow blob */
+  .skill-card::after {
+    content: '';
+    position: absolute;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: var(--glow);
+    filter: blur(40px);
+    top: -20px; right: -20px;
+    opacity: 0;
+    transition: opacity .4s;
+  }
+  .skill-card:hover::after { opacity: 0.4; }
+
+  .skill-icon {
+    font-size: 36px;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .skill-num {
+    position: absolute; top: 20px; right: 20px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+  .skill-name {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .skill-desc {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .skill-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .skill-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 2px;
+    color: var(--cyan);
+  }
+  .skill-arrow {
+    position: absolute; bottom: 20px; right: 20px;
+    font-size: 18px;
+    color: var(--muted);
+    transition: color .3s, transform .3s;
+  }
+  .skill-card:hover .skill-arrow { color: var(--cyan); transform: translate(3px, -3px); }
+
+  /* ─── PROJECT SECTIONS ─── */
+  .project-section {
+    padding: 100px 80px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    position: relative;
+  }
+  .project-section:nth-child(odd) { background: var(--bg2); }
+
+  .project-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .project-inner.reverse { direction: rtl; }
+  .project-inner.reverse > * { direction: ltr; }
+
+  .project-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .project-title {
+    font-family: var(--font-head);
+    font-size: clamp(22px, 2.5vw, 34px);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .project-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .project-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .project-tool {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text);
+    letter-spacing: .5px;
+  }
+
+  /* PROJECT VISUAL CARD */
+  .project-visual {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .project-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--vis-bg, radial-gradient(ellipse at top right, rgba(0,212,255,0.08) 0%, transparent 60%));
+  }
+  .vis-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
+  }
+  .vis-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .vis-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    flex: 1;
+    text-align: center;
+  }
+
+  /* SVG diagrams inside visuals */
+  .vis-svg { width: 100%; max-height: 200px; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 60px 40px;
+    border-top: 1px solid var(--border);
+    position: relative; z-index: 1;
+  }
+  .footer-name {
+    font-family: var(--font-head);
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .footer-sub {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+  .footer-links { display: flex; gap: 20px; justify-content: center; margin-bottom: 30px; }
+  .footer-links a {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 8px 20px;
+    border-radius: 2px;
+    transition: all .25s;
+    text-transform: uppercase;
+  }
+  .footer-links a:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,212,255,0.05); }
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    opacity: .5;
+  }
+
+  /* ─── SCAN LINE EFFECT ─── */
+  .scanline {
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.03) 3px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    opacity: .4;
+  }
+
+  /* ─── DECORATIVE SIGNAL WAVE ─── */
+  .wave-divider {
+    display: flex; align-items: center; gap: 16px;
+    max-width: 800px; margin: 0 auto 60px;
+    opacity: .3;
+  }
+  .wave-line { flex: 1; height: 1px; background: var(--cyan); }
+  .wave-icon { font-family: var(--font-mono); font-size: 14px; color: var(--cyan); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
+    50% { opacity: .4; box-shadow: none; }
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  @keyframes dash {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes glow-pulse {
+    0%, 100% { opacity: .6; }
+    50% { opacity: 1; }
+  }
+
+  /* ─── SKILL CARD DELAY ─── */
+  .skill-card:nth-child(1) { animation-delay: .05s; }
+  .skill-card:nth-child(2) { animation-delay: .10s; }
+  .skill-card:nth-child(3) { animation-delay: .15s; }
+  .skill-card:nth-child(4) { animation-delay: .20s; }
+  .skill-card:nth-child(5) { animation-delay: .25s; }
+  .skill-card:nth-child(6) { animation-delay: .30s; }
+  .skill-card:nth-child(7) { animation-delay: .35s; }
+  .skill-card:nth-child(8) { animation-delay: .40s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    #hero { grid-template-columns: 1fr; padding: 100px 30px 60px; gap: 40px; }
+    .hero-right { order: -1; }
+    #skills, .project-section { padding: 70px 30px; }
+    .project-inner { grid-template-columns: 1fr; gap: 32px; }
+    .project-inner.reverse { direction: ltr; }
+    nav { padding: 0 20px; }
+    .nav-links { gap: 16px; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 580px) {
+    .skills-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .photo-frame { width: 200px; height: 200px; }
+    .hero-name { font-size: 32px; }
+  }
+
+  /* ─── LOOP DIAGRAM SVG STYLES ─── */
+  .loop-line { stroke: var(--cyan); stroke-width: 1.5; fill: none; }
+  .loop-box { fill: var(--bg2); stroke: var(--cyan); stroke-width: 1.5; rx: 4; }
+  .loop-txt { fill: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 9px; }
+  .loop-signal { stroke: var(--green); stroke-width: 2; fill: none; stroke-dasharray: 5,3; animation: dash 2s linear infinite; stroke-dashoffset: 30; }
+
+  /* ─── SCADA ─── */
+  .scada-screen {
+    background: #000d18;
+    border: 1px solid var(--cyan);
+    border-radius: 4px;
+    padding: 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--green);
+    position: relative;
+    overflow: hidden;
+  }
+  .scada-bar { display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--cyan); font-size: 10px; }
+  .scada-val { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .scada-item { background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.2); padding: 6px 10px; border-radius: 2px; }
+  .scada-lbl { color: var(--muted); font-size: 9px; }
+  .scada-num { color: var(--green); font-size: 14px; font-weight: bold; animation: glow-pulse 2s infinite; }
+
+  .pid-box { fill: none; stroke: var(--text); stroke-width: 1; }
+  .pid-circle { fill: none; stroke: var(--cyan); stroke-width: 1.5; }
+  .pid-line { stroke: var(--muted); stroke-width: 1; fill: none; }
+  .pid-txt { fill: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 8px; }
+  .pid-label { fill: var(--cyan); font-family: 'Share Tech Mono', monospace; font-size: 8px; }
+
+  .kicad-visual {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 10px;
+  }
+  .kicad-comp {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 4px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--muted);
+    background: var(--bg);
+    transition: border-color .3s, color .3s;
+  }
+  .kicad-comp:hover { border-color: var(--cyan); color: var(--cyan); }
+  .kicad-comp .sym { font-size: 18px; margin-bottom: 4px; }
+
+  /* Sensor waveform */
+  .wave-svg { animation: glow-pulse 3s infinite; }
+</style>
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-logo">EE<span>.</span>PORT<span>_</span></div>
+  <div class="nav-links">
+    <a href="#hero">Home</a>
+    <a href="#skills">Skills</a>
+    <a href="#loop">Projects</a>
+    <a href="#final">Final Project</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-badge">AVAILABLE FOR INTERNSHIP &amp; COLLABORATION</div>
+
+    <h1 class="hero-name">
+      <span class="line1">Your Name</span>
+      <span class="line2">Here</span>
+    </h1>
+
+    <div class="hero-title">Electrical Engineering Student · Instrumentation &amp; Automation</div>
+
+    <p class="hero-about">
+      Passionate about building intelligent measurement systems and automation solutions.
+      I bridge the gap between sensors, signals, and software — from field instruments
+      to SCADA dashboards and everything in between.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#skills" class="btn btn-primary">&#9881; Explore My Skills</a>
+      <a href="/cdn-cgi/l/email-protection#d7aeb8a297b2bab6bebbf9b4b8ba" class="btn btn-outline">&#9993; Contact Me</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="photo-frame">
+      <div class="photo-inner">
+        <!--
+          REPLACE THIS with your actual photo:
+          <img src="your-photo.jpg" alt="Your Name" />
+          Or keep the initials placeholder below.
+        -->
+        <img src="data:image/jpeg;base64,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" alt="Your Name" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">8+</div>
+        <div class="stat-lbl">Projects</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5+</div>
+        <div class="stat-lbl">Tools</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3yr</div>
+        <div class="stat-lbl">Learning</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SKILLS ─── -->
+<section id="skills">
+  <div class="section-header">
+    <div class="section-tag">// competencies</div>
+    <h2 class="section-title">Core <span>Skills</span></h2>
+    <div class="section-line"></div>
+    <p style="font-size:14px;color:var(--muted);margin-top:14px;font-family:var(--font-mono)">Click any skill to jump to the project</p>
+  </div>
+
+  <div class="skills-grid">
+
+    <a href="#loop" class="skill-card" style="--grad:linear-gradient(90deg,#00d4ff,#00ff99);--glow:rgba(0,212,255,0.6);">
+      <span class="skill-num">01</span>
+      <span class="skill-icon">🔁</span>
+      <div class="skill-name">Instrument Loop Diagram</div>
+      <div class="skill-desc">Design and read ISA-standard loop diagrams for process control systems.</div>
+      <div class="skill-tags"><span class="skill-tag">ISA-5.1</span><span class="skill-tag">Loop Design</span></div>
+      <span class="skill-arrow">&#8599;</span>
+    </a>
+
+    <a href="#sensors" class="skill-card" style="--grad:linear-gradient(90deg,#00ff99,#00d4ff);--glow:rgba(0,255,153,0.6);">
+      <span class="skill-num">02</span>
+      <span class="skill-icon">📡</span>
+      <div class="skill-name">Sensors & Transducers</div>
+      <div class="skill-desc">Self-built sensor circuits for temperature, pressure, flow and proximity sensing.</div>
+      <div class="skill-tags"><span class="skill-tag">Arduino</span><span class="skill-tag">ADC</span><span class="skill-tag">Calibration</span></div>
+      <span class="skill-arrow">&#8599;</span>
+    </a>
+
+    <a href="#kicad" class="skill-card" style="--grad:linear-gradient(90deg,#ffb800,#ff7040);--glow:rgba(255,184,0,0.6);">
+      <span class="skill-num">03</span>
+      <span class="skill-icon">🖥️</span>
+      <div class="skill-name">KiCAD PCB Design</div>
+      <div class="skill-desc">Schematic capture and PCB layout for instrumentation circuits.</div>
+      <div class="skill-tags"><span class="skill-tag">KiCAD 7</span><span class="skill-tag">PCB Layout</span><span class="skill-tag">Gerber</span></div>
+      <span class="skill-arrow">&#8599;</span>
+    </a>
+
+    <a href="#autocad" class="skill-card" style="--grad:linear-gradient(90deg,#ff4060,#ff00aa);--glow:rgba(255,64,96,0.6);">
+      <span class="skill-num">04</span>
+      <span class="skill-icon">📐</span>
+      <div class="skill-name">AutoCAD Electrical</div>
+      <div class="skill-desc">Professional electrical schematics, panel layouts and wire numbering.</div>
+      <div class="skill-tags"><span class="skill-tag">AutoCAD</span><span class="skill-tag">Schematics</span><span class="skill-tag">IEC/ANSI</span></div>
+      <span class="skill-arrow">&#8599;</span>
+    </a>
+
+    <a href="#pid" class="skill-card" style="--grad:linear-gradient(90deg,#aa00ff,#00d4ff);--glow:rgba(170,0,255,0.6);">
+      <span class="skill-num">05</span>
+      <span class="skill-icon">🗺️</span>
+      <div class="skill-name">P&ID Design</div>
+      <div class="skill-desc">Piping & Instrumentation Diagrams for oil & gas and process industries.</div>
+      <div class="skill-tags"><span class="skill-tag">ISA-5.1</span><span class="skill-tag">Process</span><span class="skill-tag">HAZOP</span></div>
+      <span class="skill-arrow">&#8599;</span>
+    </a>
+
+    <a href="#scada" class="skill-card" style="--grad:linear-gradient(90deg,#00d4ff,#aa00ff);--glow:rgba(0,212,255,0.6);">
+      <span class="skill-num">06</span>
+      <span class="skill-icon">🖧</span>
+      <div class="skill-name">SCADA Systems</div>
+      <div class="skill-desc">HMI/SCADA development with real-time data acquisition and alarm management.</div>
+      <div class="skill-tags"><span class="skill-tag">SCADA</span><span class="skill-tag">HMI</span><span class="skill-tag">OPC-UA</span></div>
+      <span class="skill-arrow">&#8599;</span>
+    </a>
+
+    <a href="#spi" class="skill-card" style="--grad:linear-gradient(90deg,#00ff99,#ffb800);--glow:rgba(0,255,153,0.6);">
+      <span class="skill-num">07</span>
+      <span class="skill-icon">⚙️</span>
+      <div class="skill-name">SPI Project</div>
+      <div class="skill-desc">Smart Process Integration using industrial protocols and communication buses.</div>
+      <div class="skill-tags"><span class="skill-tag">HART</span><span class="skill-tag">PROFIBUS</span><span class="skill-tag">Modbus</span></div>
+      <span class="skill-arrow">&#8599;</span>
+    </a>
+
+    <a href="#final" class="skill-card" style="--grad:linear-gradient(90deg,#ffb800,#00ff99);--glow:rgba(255,184,0,0.7);">
+      <span class="skill-num">08</span>
+      <span class="skill-icon">🏆</span>
+      <div class="skill-name">Final Project</div>
+      <div class="skill-desc">Capstone project integrating instrumentation, automation and data systems.</div>
+      <div class="skill-tags"><span class="skill-tag">Capstone</span><span class="skill-tag">Integration</span></div>
+      <span class="skill-arrow">&#8599;</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- ─── LOOP DIAGRAM ─── -->
+<section id="loop" class="project-section">
+  <div class="project-inner">
+    <div>
+      <div class="project-label">// project 01</div>
+      <h3 class="project-title">Instrument Loop Diagram Design</h3>
+      <p class="project-desc">
+        Developed ISA-5.1 compliant loop diagrams for a process control system, 
+        documenting signal paths from field instruments through junction boxes to 
+        the DCS/PLC. Includes 4–20 mA wiring, power supply, and grounding details.
+      </p>
+      <div class="project-tools">
+        <span class="project-tool">AutoCAD</span>
+        <span class="project-tool">ISA-5.1 Standard</span>
+        <span class="project-tool">HART Protocol</span>
+        <span class="project-tool">DCS Integration</span>
+      </div>
+      <a href="#" class="btn btn-outline" style="font-size:12px;padding:10px 22px;">&#8599; View Diagrams</a>
+    </div>
+    <div class="project-visual" style="--vis-bg:radial-gradient(ellipse at top right,rgba(0,212,255,0.1) 0%,transparent 60%);">
+      <div class="vis-header">
+        <div class="vis-dot" style="background:#ff4060"></div>
+        <div class="vis-dot" style="background:#ffb800"></div>
+        <div class="vis-dot" style="background:#00ff99"></div>
+        <div class="vis-title">loop_diagram.dwg</div>
+      </div>
+      <svg viewBox="0 0 360 200" class="vis-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Field Instrument -->
+        <rect x="10" y="80" width="70" height="40" rx="4" class="loop-box"/>
+        <text x="45" y="96" class="loop-txt" text-anchor="middle">TT-101</text>
+        <text x="45" y="108" class="loop-txt" text-anchor="middle" fill="#5a7a99">TEMP TX</text>
+        <!-- Signal line -->
+        <line x1="80" y1="100" x2="120" y2="100" class="loop-signal"/>
+        <text x="100" y="94" class="loop-txt" text-anchor="middle" fill="#ffb800">4-20mA</text>
+        <!-- JB -->
+        <rect x="120" y="82" width="50" height="36" rx="3" class="loop-box"/>
+        <text x="145" y="98" class="loop-txt" text-anchor="middle">JB-101</text>
+        <text x="145" y="110" class="loop-txt" text-anchor="middle" fill="#5a7a99">JB</text>
+        <line x1="170" y1="100" x2="210" y2="100" class="loop-signal"/>
+        <!-- AI Module -->
+        <rect x="210" y="75" width="60" height="50" rx="4" class="loop-box"/>
+        <text x="240" y="93" class="loop-txt" text-anchor="middle">AI-101</text>
+        <text x="240" y="105" class="loop-txt" text-anchor="middle" fill="#5a7a99">DCS/PLC</text>
+        <text x="240" y="117" class="loop-txt" text-anchor="middle" fill="#5a7a99">INPUT</text>
+        <!-- Indication -->
+        <line x1="270" y1="100" x2="310" y2="100" stroke="#00d4ff" stroke-width="1" fill="none"/>
+        <circle cx="325" cy="100" r="15" class="pid-circle"/>
+        <text x="325" y="97" class="loop-txt" text-anchor="middle" fill="#00d4ff">TI</text>
+        <text x="325" y="108" class="loop-txt" text-anchor="middle" fill="#00d4ff">101</text>
+        <!-- Power supply line -->
+        <line x1="145" y1="60" x2="145" y2="82" stroke="#ffb800" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="115" y="44" width="60" height="16" rx="2" fill="none" stroke="#ffb800" stroke-width="1"/>
+        <text x="145" y="55" class="loop-txt" text-anchor="middle" fill="#ffb800">24 VDC PS</text>
+        <!-- GND -->
+        <line x1="45" y1="120" x2="45" y2="150" stroke="#5a7a99" stroke-width="1"/>
+        <line x1="35" y1="150" x2="55" y2="150" stroke="#5a7a99" stroke-width="1.5"/>
+        <line x1="38" y1="154" x2="52" y2="154" stroke="#5a7a99" stroke-width="1"/>
+        <line x1="41" y1="158" x2="49" y2="158" stroke="#5a7a99" stroke-width="1"/>
+        <text x="62" y="157" class="loop-txt" fill="#5a7a99">GND</text>
+        <!-- Labels -->
+        <text x="10" y="170" class="loop-txt" fill="#00d4ff">FIELD</text>
+        <text x="125" y="170" class="loop-txt" fill="#00d4ff">MARSHALLING</text>
+        <text x="215" y="170" class="loop-txt" fill="#00d4ff">CONTROL ROOM</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SENSORS ─── -->
+<section id="sensors" class="project-section">
+  <div class="project-inner reverse">
+    <div>
+      <div class="project-label">// project 02</div>
+      <h3 class="project-title">Sensors Self Projects</h3>
+      <p class="project-desc">
+        Built sensor interfacing circuits for temperature (PT100/RTD, NTC Thermistor), 
+        pressure (MPX5700), proximity (IR, ultrasonic HC-SR04), and flow (YF-S201). 
+        Includes signal conditioning, ADC interfacing and calibration routines.
+      </p>
+      <div class="project-tools">
+        <span class="project-tool">Arduino / STM32</span>
+        <span class="project-tool">Op-Amp Circuits</span>
+        <span class="project-tool">ADC Interfacing</span>
+        <span class="project-tool">Python (matplotlib)</span>
+      </div>
+      <a href="#" class="btn btn-outline" style="font-size:12px;padding:10px 22px;">&#8599; View Projects</a>
+    </div>
+    <div class="project-visual" style="--vis-bg:radial-gradient(ellipse at bottom left,rgba(0,255,153,0.1) 0%,transparent 60%);">
+      <div class="vis-header">
+        <div class="vis-dot" style="background:#ff4060"></div>
+        <div class="vis-dot" style="background:#ffb800"></div>
+        <div class="vis-dot" style="background:#00ff99"></div>
+        <div class="vis-title">sensor_data.py</div>
+      </div>
+      <svg viewBox="0 0 360 190" class="vis-svg wave-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Grid -->
+        <line x1="30" y1="20" x2="30" y2="170" stroke="#1a2a3a" stroke-width="1"/>
+        <line x1="30" y1="170" x2="350" y2="170" stroke="#1a2a3a" stroke-width="1"/>
+        <!-- Y axis labels -->
+        <text x="24" y="40" class="loop-txt" text-anchor="end" fill="#5a7a99">100</text>
+        <text x="24" y="80" class="loop-txt" text-anchor="end" fill="#5a7a99">75</text>
+        <text x="24" y="120" class="loop-txt" text-anchor="end" fill="#5a7a99">50</text>
+        <text x="24" y="160" class="loop-txt" text-anchor="end" fill="#5a7a99">25</text>
+        <!-- Temperature waveform (smooth) -->
+        <polyline points="30,120 70,110 110,90 150,75 190,68 230,72 270,85 310,100 350,95"
+          stroke="#00d4ff" stroke-width="2" fill="none"/>
+        <!-- Pressure waveform -->
+        <polyline points="30,150 70,148 110,130 150,125 190,115 230,120 270,135 310,140 350,138"
+          stroke="#00ff99" stroke-width="2" fill="none" stroke-dasharray="4,2"/>
+        <!-- Dots -->
+        <circle cx="190" cy="68" r="4" fill="#00d4ff"/>
+        <circle cx="190" cy="115" r="4" fill="#00ff99"/>
+        <!-- Legend -->
+        <line x1="50" y1="22" x2="70" y2="22" stroke="#00d4ff" stroke-width="2"/>
+        <text x="75" y="26" class="loop-txt" fill="#00d4ff">Temperature (°C)</text>
+        <line x1="160" y1="22" x2="180" y2="22" stroke="#00ff99" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="185" y="26" class="loop-txt" fill="#00ff99">Pressure (kPa)</text>
+        <!-- Annotation -->
+        <line x1="190" y1="68" x2="220" y2="48" stroke="#00d4ff" stroke-width="1" stroke-dasharray="2,2"/>
+        <text x="222" y="45" class="loop-txt" fill="#00d4ff">Peak: 97°C</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ─── KICAD ─── -->
+<section id="kicad" class="project-section">
+  <div class="project-inner">
+    <div>
+      <div class="project-label">// project 03</div>
+      <h3 class="project-title">KiCAD PCB Design</h3>
+      <p class="project-desc">
+        Designed instrumentation amplifier PCBs for sensor signal conditioning, 
+        including 4-layer stack-ups with controlled impedance traces and ground pours.
+        From schematic capture to Gerber file generation and BOM export.
+      </p>
+      <div class="project-tools">
+        <span class="project-tool">KiCAD 7.0</span>
+        <span class="project-tool">4-Layer PCB</span>
+        <span class="project-tool">DRC / ERC</span>
+        <span class="project-tool">Gerber Export</span>
+      </div>
+      <a href="#" class="btn btn-outline" style="font-size:12px;padding:10px 22px;">&#8599; View Schematics</a>
+    </div>
+    <div class="project-visual" style="--vis-bg:radial-gradient(ellipse at top right,rgba(255,184,0,0.08) 0%,transparent 60%);">
+      <div class="vis-header">
+        <div class="vis-dot" style="background:#ff4060"></div>
+        <div class="vis-dot" style="background:#ffb800"></div>
+        <div class="vis-dot" style="background:#00ff99"></div>
+        <div class="vis-title">instrumentation_amp.kicad_pcb</div>
+      </div>
+      <div class="kicad-visual">
+        <div class="kicad-comp"><div class="sym">⚡</div>U1<br>INA128</div>
+        <div class="kicad-comp"><div class="sym">〰</div>R1<br>10kΩ</div>
+        <div class="kicad-comp"><div class="sym">⊟</div>C1<br>100nF</div>
+        <div class="kicad-comp"><div class="sym">🔌</div>J1<br>4-Pin</div>
+        <div class="kicad-comp"><div class="sym">▣</div>U2<br>REF02</div>
+        <div class="kicad-comp"><div class="sym">〰</div>R2<br>1kΩ</div>
+        <div class="kicad-comp"><div class="sym">〰</div>R3<br>47Ω</div>
+        <div class="kicad-comp"><div class="sym">⊟</div>C2<br>10µF</div>
+        <div class="kicad-comp"><div class="sym">⊡</div>U3<br>MCP602</div>
+        <div class="kicad-comp"><div class="sym">🔌</div>J2<br>SMA</div>
+      </div>
+      <div style="text-align:center;margin-top:10px;">
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--green);">✓ DRC: 0 Errors &nbsp;|&nbsp; ✓ ERC: 0 Warnings &nbsp;|&nbsp; 4 Layers</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AUTOCAD ─── -->
+<section id="autocad" class="project-section">
+  <div class="project-inner reverse">
+    <div>
+      <div class="project-label">// project 04</div>
+      <h3 class="project-title">AutoCAD Electrical Design</h3>
+      <p class="project-desc">
+        Created professional electrical panel layouts and wiring schematics using 
+        AutoCAD Electrical. Implements IEC/ANSI symbols, automatic wire numbering, 
+        and reports generation for BOM and terminal strips.
+      </p>
+      <div class="project-tools">
+        <span class="project-tool">AutoCAD Electrical</span>
+        <span class="project-tool">IEC 60617</span>
+        <span class="project-tool">Panel Layout</span>
+        <span class="project-tool">Wire Numbering</span>
+      </div>
+      <a href="#" class="btn btn-outline" style="font-size:12px;padding:10px 22px;">&#8599; View Drawings</a>
+    </div>
+    <div class="project-visual" style="--vis-bg:radial-gradient(ellipse at bottom right,rgba(255,64,96,0.08) 0%,transparent 60%);">
+      <div class="vis-header">
+        <div class="vis-dot" style="background:#ff4060"></div>
+        <div class="vis-dot" style="background:#ffb800"></div>
+        <div class="vis-dot" style="background:#00ff99"></div>
+        <div class="vis-title">panel_layout.dwg</div>
+      </div>
+      <svg viewBox="0 0 360 190" class="vis-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Panel outline -->
+        <rect x="20" y="10" width="320" height="170" rx="4" fill="none" stroke="#5a7a99" stroke-width="1.5"/>
+        <!-- Title block -->
+        <rect x="20" y="150" width="320" height="30" fill="#0c1220" stroke="#5a7a99" stroke-width="1"/>
+        <text x="35" y="168" class="loop-txt" fill="#5a7a99">PANEL: MCC-01</text>
+        <text x="200" y="168" class="loop-txt" fill="#5a7a99">SHEET: 01/05</text>
+        <text x="300" y="168" class="loop-txt" fill="#ffb800">REV: A</text>
+        <!-- Circuit breaker row -->
+        <rect x="35" y="25" width="18" height="30" rx="2" fill="#0c1220" stroke="#00d4ff" stroke-width="1"/>
+        <text x="44" y="43" class="loop-txt" text-anchor="middle" fill="#00d4ff">CB1</text>
+        <rect x="60" y="25" width="18" height="30" rx="2" fill="#0c1220" stroke="#00d4ff" stroke-width="1"/>
+        <text x="69" y="43" class="loop-txt" text-anchor="middle" fill="#00d4ff">CB2</text>
+        <rect x="85" y="25" width="18" height="30" rx="2" fill="#0c1220" stroke="#00d4ff" stroke-width="1"/>
+        <text x="94" y="43" class="loop-txt" text-anchor="middle" fill="#00d4ff">CB3</text>
+        <!-- Contactor -->
+        <rect x="130" y="20" width="40" height="45" rx="3" fill="#0c1220" stroke="#ffb800" stroke-width="1.5"/>
+        <text x="150" y="37" class="loop-txt" text-anchor="middle" fill="#ffb800">KM1</text>
+        <text x="150" y="49" class="loop-txt" text-anchor="middle" fill="#5a7a99">Contactor</text>
+        <text x="150" y="61" class="loop-txt" text-anchor="middle" fill="#5a7a99">25A</text>
+        <!-- Relay -->
+        <rect x="190" y="22" width="35" height="40" rx="3" fill="#0c1220" stroke="#00ff99" stroke-width="1.5"/>
+        <text x="207" y="38" class="loop-txt" text-anchor="middle" fill="#00ff99">K1</text>
+        <text x="207" y="50" class="loop-txt" text-anchor="middle" fill="#5a7a99">Relay</text>
+        <!-- PLC -->
+        <rect x="245" y="18" width="80" height="50" rx="4" fill="#0c1220" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="285" y="35" class="loop-txt" text-anchor="middle" fill="#00d4ff">PLC MODULE</text>
+        <text x="285" y="47" class="loop-txt" text-anchor="middle" fill="#5a7a99">CPU + 16DI/DO</text>
+        <text x="285" y="59" class="loop-txt" text-anchor="middle" fill="#5a7a99">Modbus RTU</text>
+        <!-- Terminal strip -->
+        <rect x="35" y="100" width="290" height="20" rx="2" fill="#0a0e14" stroke="#5a7a99" stroke-width="1"/>
+        <text x="180" y="113" class="loop-txt" text-anchor="middle" fill="#5a7a99">TERMINAL STRIP X1 — Wire Numbers: 101–132</text>
+        <!-- Wires -->
+        <line x1="44" y1="55" x2="44" y2="100" stroke="#ff4060" stroke-width="1.5"/>
+        <line x1="69" y1="55" x2="69" y2="100" stroke="#00d4ff" stroke-width="1.5"/>
+        <line x1="150" y1="65" x2="150" y2="100" stroke="#ffb800" stroke-width="1.5"/>
+        <line x1="285" y1="68" x2="285" y2="100" stroke="#00ff99" stroke-width="1.5"/>
+        <!-- Wire numbers -->
+        <text x="47" y="80" class="loop-txt" fill="#ff4060">L</text>
+        <text x="72" y="80" class="loop-txt" fill="#00d4ff">N</text>
+        <text x="153" y="80" class="loop-txt" fill="#ffb800">101</text>
+        <text x="288" y="80" class="loop-txt" fill="#00ff99">102</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ─── P&ID ─── -->
+<section id="pid" class="project-section">
+  <div class="project-inner">
+    <div>
+      <div class="project-label">// project 05</div>
+      <h3 class="project-title">P&ID Design Project</h3>
+      <p class="project-desc">
+        Created Piping and Instrumentation Diagrams for a heat exchanger process unit
+        following ISA-5.1 and ISO 10628 standards. Includes control loops, safety 
+        instrumented systems, and alarm/trip logic documentation.
+      </p>
+      <div class="project-tools">
+        <span class="project-tool">ISA-5.1 / ISO 10628</span>
+        <span class="project-tool">Visio / AutoCAD</span>
+        <span class="project-tool">Control Loops</span>
+        <span class="project-tool">SIS / SIL</span>
+      </div>
+      <a href="#" class="btn btn-outline" style="font-size:12px;padding:10px 22px;">&#8599; View P&ID</a>
+    </div>
+    <div class="project-visual" style="--vis-bg:radial-gradient(ellipse at top left,rgba(170,0,255,0.08) 0%,transparent 60%);">
+      <div class="vis-header">
+        <div class="vis-dot" style="background:#ff4060"></div>
+        <div class="vis-dot" style="background:#ffb800"></div>
+        <div class="vis-dot" style="background:#00ff99"></div>
+        <div class="vis-title">heat_exchanger_PID.dwg</div>
+      </div>
+      <svg viewBox="0 0 360 190" class="vis-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Process pipe (horizontal main) -->
+        <line x1="20" y1="95" x2="340" y2="95" stroke="#5a7a99" stroke-width="3"/>
+        <!-- Heat Exchanger -->
+        <rect x="140" y="65" width="80" height="60" rx="4" class="pid-box" stroke="#00d4ff"/>
+        <text x="180" y="88" class="pid-label" text-anchor="middle">HE-101</text>
+        <text x="180" y="100" class="pid-txt" text-anchor="middle">Heat Exchanger</text>
+        <text x="180" y="113" class="pid-txt" text-anchor="middle">Shell &amp; Tube</text>
+        <!-- Valve 1 (control) -->
+        <polygon points="60,85 60,105 80,95" fill="#0c1220" stroke="#00ff99" stroke-width="1.5"/>
+        <polygon points="80,85 80,105 60,95" fill="#0c1220" stroke="#00ff99" stroke-width="1.5"/>
+        <line x1="70" y1="75" x2="70" y2="85" stroke="#00ff99" stroke-width="1.5"/>
+        <!-- FIC -->
+        <circle cx="70" cy="62" r="13" class="pid-circle"/>
+        <text x="70" y="59" class="loop-txt" text-anchor="middle" fill="#00d4ff">FIC</text>
+        <text x="70" y="70" class="loop-txt" text-anchor="middle" fill="#00d4ff">101</text>
+        <!-- Flow transmitter -->
+        <circle cx="110" cy="95" r="10" fill="#0c1220" stroke="#5a7a99" stroke-width="1"/>
+        <text x="110" y="92" class="pid-txt" text-anchor="middle">FT</text>
+        <text x="110" y="102" class="pid-txt" text-anchor="middle">101</text>
+        <line x1="110" y1="85" x2="70" y2="75" stroke="#ffb800" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- Temperature indicator -->
+        <circle cx="240" cy="95" r="10" fill="#0c1220" stroke="#5a7a99" stroke-width="1"/>
+        <text x="240" y="92" class="pid-txt" text-anchor="middle">TT</text>
+        <text x="240" y="102" class="pid-txt" text-anchor="middle">101</text>
+        <!-- Valve 2 (safety) -->
+        <polygon points="290,85 290,105 310,95" fill="#0c1220" stroke="#ff4060" stroke-width="1.5"/>
+        <polygon points="310,85 310,105 290,95" fill="#0c1220" stroke="#ff4060" stroke-width="1.5"/>
+        <line x1="300" y1="75" x2="300" y2="85" stroke="#ff4060" stroke-width="1.5"/>
+        <circle cx="300" cy="62" r="13" class="pid-circle" stroke="#ff4060"/>
+        <text x="300" y="59" class="loop-txt" text-anchor="middle" fill="#ff4060">PSV</text>
+        <text x="300" y="70" class="loop-txt" text-anchor="middle" fill="#ff4060">101</text>
+        <!-- Labels -->
+        <text x="30" y="85" class="pid-txt" fill="#5a7a99">IN</text>
+        <text x="320" y="85" class="pid-txt" fill="#5a7a99">OUT</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SCADA ─── -->
+<section id="scada" class="project-section">
+  <div class="project-inner reverse">
+    <div>
+      <div class="project-label">// project 06</div>
+      <h3 class="project-title">SCADA Project</h3>
+      <p class="project-desc">
+        Built a SCADA system for a water treatment plant simulation using WinCC / 
+        Ignition. Features real-time trending, alarm management, historian, and 
+        remote access over OPC-UA. Connected to a simulated S7-1200 PLC.
+      </p>
+      <div class="project-tools">
+        <span class="project-tool">Ignition / WinCC</span>
+        <span class="project-tool">OPC-UA</span>
+        <span class="project-tool">S7-1200 PLC</span>
+        <span class="project-tool">Historian</span>
+      </div>
+      <a href="#" class="btn btn-outline" style="font-size:12px;padding:10px 22px;">&#8599; View SCADA Demo</a>
+    </div>
+    <div class="project-visual" style="--vis-bg:radial-gradient(ellipse at top right,rgba(0,212,255,0.07) 0%,transparent 60%);">
+      <div class="vis-header">
+        <div class="vis-dot" style="background:#ff4060"></div>
+        <div class="vis-dot" style="background:#ffb800"></div>
+        <div class="vis-dot" style="background:#00ff99"></div>
+        <div class="vis-title">SCADA_HMI — Water Treatment</div>
+      </div>
+      <div class="scada-screen">
+        <div class="scada-bar">
+          <span>&#9679; ONLINE</span>
+          <span>PLANT: WTP-01</span>
+          <span id="scada-time">--:--:--</span>
+        </div>
+        <div class="scada-val">
+          <div class="scada-item">
+            <div class="scada-lbl">FLOW RATE</div>
+            <div class="scada-num" id="sv1">124.3 m³/h</div>
+          </div>
+          <div class="scada-item">
+            <div class="scada-lbl">PRESSURE</div>
+            <div class="scada-num" id="sv2">3.42 bar</div>
+          </div>
+          <div class="scada-item">
+            <div class="scada-lbl">LEVEL TANK-1</div>
+            <div class="scada-num" id="sv3">78.5 %</div>
+          </div>
+          <div class="scada-item">
+            <div class="scada-lbl">TEMP OUTLET</div>
+            <div class="scada-num" id="sv4">24.1 °C</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:10px;color:#ff4060;">
+          ⚠ ALARM: High Level Tank-2 — 09:14:22
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SPI ─── -->
+<section id="spi" class="project-section">
+  <div class="project-inner">
+    <div>
+      <div class="project-label">// project 07</div>
+      <h3 class="project-title">SPI Project</h3>
+      <p class="project-desc">
+        Smart Process Integration project connecting field devices through HART 
+        multiplexers, Modbus RTU networks, and PROFIBUS DP segments to a unified 
+        asset management system. Validates instrument health and generates PMC reports.
+      </p>
+      <div class="project-tools">
+        <span class="project-tool">HART 7</span>
+        <span class="project-tool">Modbus RTU/TCP</span>
+        <span class="project-tool">PROFIBUS DP</span>
+        <span class="project-tool">AMS Device Manager</span>
+      </div>
+      <a href="#" class="btn btn-outline" style="font-size:12px;padding:10px 22px;">&#8599; View Integration</a>
+    </div>
+    <div class="project-visual" style="--vis-bg:radial-gradient(ellipse at bottom right,rgba(0,255,153,0.08) 0%,transparent 60%);">
+      <div class="vis-header">
+        <div class="vis-dot" style="background:#ff4060"></div>
+        <div class="vis-dot" style="background:#ffb800"></div>
+        <div class="vis-dot" style="background:#00ff99"></div>
+        <div class="vis-title">network_topology.svg</div>
+      </div>
+      <svg viewBox="0 0 360 190" class="vis-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Top layer: Enterprise -->
+        <rect x="130" y="10" width="100" height="28" rx="4" fill="#0c1220" stroke="#ffb800" stroke-width="1.5"/>
+        <text x="180" y="22" class="pid-label" text-anchor="middle" fill="#ffb800">AMS SERVER</text>
+        <text x="180" y="33" class="pid-txt" text-anchor="middle">Ethernet / OPC-UA</text>
+        <!-- Middle layer: Gateway -->
+        <rect x="75" y="65" width="80" height="28" rx="3" fill="#0c1220" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="115" y="78" class="pid-label" text-anchor="middle">HART MUX</text>
+        <text x="115" y="88" class="pid-txt" text-anchor="middle">32 channels</text>
+        <rect x="200" y="65" width="85" height="28" rx="3" fill="#0c1220" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="242" y="78" class="pid-label" text-anchor="middle">MODBUS GW</text>
+        <text x="242" y="88" class="pid-txt" text-anchor="middle">RTU → TCP</text>
+        <!-- Lines top-mid -->
+        <line x1="180" y1="38" x2="115" y2="65" stroke="#ffb800" stroke-width="1" stroke-dasharray="4,2"/>
+        <line x1="180" y1="38" x2="242" y2="65" stroke="#ffb800" stroke-width="1" stroke-dasharray="4,2"/>
+        <!-- Bottom layer: Field -->
+        <circle cx="60" cy="155" r="14" fill="#0c1220" stroke="#00ff99" stroke-width="1.5"/>
+        <text x="60" y="152" class="pid-txt" text-anchor="middle" fill="#00ff99">TT-1</text>
+        <text x="60" y="163" class="pid-txt" text-anchor="middle" fill="#00ff99">HART</text>
+        <circle cx="115" cy="155" r="14" fill="#0c1220" stroke="#00ff99" stroke-width="1.5"/>
+        <text x="115" y="152" class="pid-txt" text-anchor="middle" fill="#00ff99">PT-1</text>
+        <text x="115" y="163" class="pid-txt" text-anchor="middle" fill="#00ff99">HART</text>
+        <circle cx="200" cy="155" r="14" fill="#0c1220" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="200" y="152" class="pid-txt" text-anchor="middle" fill="#00d4ff">FT-1</text>
+        <text x="200" y="163" class="pid-txt" text-anchor="middle" fill="#00d4ff">MB</text>
+        <circle cx="255" cy="155" r="14" fill="#0c1220" stroke="#00d4ff" stroke-width="1.5"/>
+        <text x="255" y="152" class="pid-txt" text-anchor="middle" fill="#00d4ff">LT-1</text>
+        <text x="255" y="163" class="pid-txt" text-anchor="middle" fill="#00d4ff">MB</text>
+        <circle cx="310" cy="155" r="14" fill="#0c1220" stroke="#aa00ff" stroke-width="1.5"/>
+        <text x="310" y="152" class="pid-txt" text-anchor="middle" fill="#aa00ff">VFD</text>
+        <text x="310" y="163" class="pid-txt" text-anchor="middle" fill="#aa00ff">PB</text>
+        <!-- Lines mid-field -->
+        <line x1="115" y1="93" x2="60" y2="141" stroke="#00ff99" stroke-width="1"/>
+        <line x1="115" y1="93" x2="115" y2="141" stroke="#00ff99" stroke-width="1"/>
+        <line x1="242" y1="93" x2="200" y2="141" stroke="#00d4ff" stroke-width="1"/>
+        <line x1="242" y1="93" x2="255" y2="141" stroke="#00d4ff" stroke-width="1"/>
+        <line x1="242" y1="93" x2="310" y2="141" stroke="#aa00ff" stroke-width="1"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FINAL PROJECT ─── -->
+<section id="final" class="project-section" style="background:linear-gradient(180deg,var(--bg2),var(--bg));">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="section-header">
+      <div class="section-tag">// capstone</div>
+      <h2 class="section-title">My Final <span>Project</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div style="
+      background:var(--bg3);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:48px;
+      position:relative;
+      overflow:hidden;
+    ">
+      <!-- Decorative corner accent -->
+      <div style="position:absolute;top:0;left:0;width:120px;height:120px;background:radial-gradient(circle at 0 0,rgba(0,212,255,0.12),transparent 70%);"></div>
+      <div style="position:absolute;bottom:0;right:0;width:120px;height:120px;background:radial-gradient(circle at 100% 100%,rgba(0,255,153,0.1),transparent 70%);"></div>
+
+      <div style="position:relative;z-index:1;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+          <span style="font-size:48px;">🏆</span>
+          <div>
+            <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--amber);margin-bottom:6px;">FINAL YEAR PROJECT</div>
+            <h3 style="font-family:var(--font-head);font-size:28px;font-weight:800;color:var(--text);">
+              Your Capstone Project Title Here
+            </h3>
+          </div>
+        </div>
+
+        <p style="font-size:16px;line-height:1.85;color:var(--muted);margin-bottom:32px;max-width:700px;">
+          Describe your final project here. For example: "Designed and implemented an 
+          automated monitoring system for a small-scale industrial boiler, integrating 
+          PT100 temperature sensors, pressure transmitters, and a PLC-based control loop 
+          with SCADA visualization and remote alarm notification via GSM module."
+        </p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:16px;text-align:center;">
+            <div style="font-family:var(--font-head);font-size:24px;font-weight:800;color:var(--cyan);">8</div>
+            <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--muted);margin-top:4px;">SENSOR NODES</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:16px;text-align:center;">
+            <div style="font-family:var(--font-head);font-size:24px;font-weight:800;color:var(--green);">4</div>
+            <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--muted);margin-top:4px;">CONTROL LOOPS</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:16px;text-align:center;">
+            <div style="font-family:var(--font-head);font-size:24px;font-weight:800;color:var(--amber);">A</div>
+            <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--muted);margin-top:4px;">FINAL GRADE</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+          <span class="project-tool">PLC S7-1200</span>
+          <span class="project-tool">SCADA Ignition</span>
+          <span class="project-tool">PT100 Sensors</span>
+          <span class="project-tool">KiCAD PCB</span>
+          <span class="project-tool">P&ID Design</span>
+          <span class="project-tool">Python Analysis</span>
+        </div>
+
+        <div style="display:flex;gap:16px;flex-wrap:wrap;">
+          <a href="#" class="btn btn-primary">&#9654; View Full Project</a>
+          <a href="#" class="btn btn-outline">&#8962; GitHub Repo</a>
+          <a href="#" class="btn btn-outline">&#8681; Download Report</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-name">Your Name</div>
+  <div class="footer-sub">EE · Instrumentation & Automation · Indonesia</div>
+  <div class="footer-links">
+    <a href="#">GitHub</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Email</a>
+    <a href="#">Resume</a>
+  </div>
+  <div class="footer-copy">
+    Built with precision. Designed with signal. &copy; 2025
+  </div>
+</footer>
+
+<!-- ─── JS ─── -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // SCADA live clock
+  function updateScadaTime() {
+    const now = new Date();
+    const t = now.toTimeString().slice(0,8);
+    const el = document.getElementById('scada-time');
+    if (el) el.textContent = t;
+  }
+  setInterval(updateScadaTime, 1000);
+  updateScadaTime();
+
+  // SCADA live values (simulated)
+  const fields = [
+    { id: 'sv1', base: 124.3, unit: ' m³/h', range: 3 },
+    { id: 'sv2', base: 3.42,  unit: ' bar',  range: 0.15 },
+    { id: 'sv3', base: 78.5,  unit: ' %',    range: 1.5 },
+    { id: 'sv4', base: 24.1,  unit: ' °C',   range: 0.3 },
+  ];
+  setInterval(() => {
+    fields.forEach(f => {
+      const el = document.getElementById(f.id);
+      if (!el) return;
+      const v = f.base + (Math.random() - 0.5) * f.range;
+      el.textContent = v.toFixed(1) + f.unit;
+    });
+  }, 2000);
+
+  // Scroll reveal animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.project-inner, .section-header').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity .7s ease, transform .7s ease';
+    observer.observe(el);
+  });
+
+  // Typing effect for hero title
+  const titleEl = document.querySelector('.hero-title');
+  const originalText = titleEl.textContent;
+  titleEl.textContent = '';
+  let i = 0;
+  function typeWriter() {
+    if (i < originalText.length) {
+      titleEl.textContent += originalText[i++];
+      setTimeout(typeWriter, 40);
+    }
+  }
+  setTimeout(typeWriter, 800);
+
+  // Cursor blink on title
+  titleEl.style.borderRight = '2px solid var(--amber)';
+  titleEl.style.animation = 'blink 1s step-end infinite';
+  setTimeout(() => {
